@@ -16,8 +16,8 @@ import ArrowIcon from "../assets/arrow-icon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Body = () => {
-  const [listOfRestaurants, setListOfRestaurants] = useState([]);
-  const [filteredListOfRestaurants, setFilteredListOfRestaurants] = useState(
+  const [AlllistOfRestuarants, setAlllistOfRestuarants] = useState([]);
+  const [filteredlistOfRestuarants, setfilteredlistOfRestuarants] = useState(
     []
   );
   let [favlist, setFavList] = useState([]);
@@ -32,32 +32,24 @@ const Body = () => {
     getRestaurants();
   }, []);
 
-  useEffect(() => {
-    initiateSearch();
-  }, [searchText]);
-
   //Search function
   function initiateSearch() {
-    if(searchText === "") {
-      setFilteredListOfRestaurants(listOfRestaurants)
-    }
-    else {
-      const data = filterData(searchText, listOfRestaurants);
-      setFilteredListOfRestaurants(data);
+    const data = filterData(searchText, AlllistOfRestuarants);
+    setfilteredlistOfRestuarants(data);
 
-      //Check for toggling Searchbar back button
-      searchText !== "" ? setShowBackBtn(true) : setShowBackBtn(false);
+    //Check for toggling Searchbar back button
+    searchText !== "" ? setShowBackBtn(true) : setShowBackBtn(false);
 
-      if (data.length === 0 && searchText !== "") {
-        setFilteredListOfRestaurants([]);
-      }
+    if (data.length === 0 && searchText !== "") {
+      setfilteredlistOfRestuarants([]);
     }
+    setShowFav(false);
   }
 
   //Reset to default on Back button press
   function handleBackBtn() {
     setSearchText("");
-    setFilteredListOfRestaurants(listOfRestaurants);
+    setfilteredlistOfRestuarants(AlllistOfRestuarants);
     setShowFitler(false);
     setShowBackBtn(false);
   }
@@ -79,11 +71,11 @@ const Body = () => {
     const json = await data.json();
     console.log(json);
 
-    setListOfRestaurants(
+    setAlllistOfRestuarants(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
     );
-    setFilteredListOfRestaurants(
+    setfilteredlistOfRestuarants(
       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
     );
@@ -112,19 +104,19 @@ const Body = () => {
       setMessage(null);
     }, 2000);
     if (showFav) {
-      setFilteredListOfRestaurants(
-        filteredListOfRestaurants.filter((it) => it.info.id !== id)
+      setfilteredlistOfRestuarants(
+        filteredlistOfRestuarants.filter((it) => it.info.id !== id)
       );
     }
   };
   // avoid rendering component (Early)
-  if (!listOfRestaurants) return null;
-  return listOfRestaurants.length === 0 ? (
+  if (!AlllistOfRestuarants) return null;
+  return AlllistOfRestuarants.length === 0 ? (
     <Shimmer />
   ) : (
     <>
       <div className="search-container ml-auto p-4 border-black ">
-        {filteredListOfRestaurants?.length === 0 &&
+        {filteredlistOfRestuarants?.length === 0 &&
           searchText !== "" ? (
           <div className="flex flex-col items-center">
             <ImSad size={100} className="mt-8" />
@@ -143,7 +135,7 @@ const Body = () => {
             </button>
           </div>
         ) : (
-          <div className="md:flex md:justify-center md:items-center">
+          <div className="md:flex md:justify-center md:items-center mt-20">
             <div className="flex flex-col md:flex-row items-center  md:items-center lg:pl-9">
               <div className="flex items-center ">
                 {showBackBtn && (
@@ -182,17 +174,17 @@ const Body = () => {
                     : ""
                     }`}
                   onClick={() => {
-                    let filteredList = listOfRestaurants;
+                    let filteredList = AlllistOfRestuarants;
                     if (!showFitler) {
                       filteredList =
-                        listOfRestaurants.filter(
+                        AlllistOfRestuarants.filter(
                           (res) =>
                             res.info.avgRating > 4
                         );
                     }
                     setShowFitler(!showFitler);
                     setShowFav(false);
-                    setFilteredListOfRestaurants(
+                    setfilteredlistOfRestuarants(
                       filteredList
                     );
                   }}
@@ -205,10 +197,10 @@ const Body = () => {
                     : ""
                     }`}
                   onClick={() => {
-                    let filteredList = listOfRestaurants;
+                    let filteredList = AlllistOfRestuarants;
                     if (!showFav) {
                       filteredList =
-                        listOfRestaurants.filter(
+                        AlllistOfRestuarants.filter(
                           (res) =>
                             favlist.includes(
                               res.info.id
@@ -217,7 +209,7 @@ const Body = () => {
                     }
                     setShowFav(!showFav);
                     setShowFitler(false);
-                    setFilteredListOfRestaurants(
+                    setfilteredlistOfRestuarants(
                       filteredList
                     );
                   }}
@@ -230,9 +222,9 @@ const Body = () => {
         )}
       </div>
       <div>
-        {filteredListOfRestaurants.length > 0 ? (
+        {filteredlistOfRestuarants.length > 0 ? (
           <div className="px-14 md:px-28 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredListOfRestaurants.map((restaurant) => (
+            {filteredlistOfRestuarants.map((restaurant) => (
               <RestruarantCards
                 key={restaurant?.info.id}
                 id={restaurant?.info?.id}

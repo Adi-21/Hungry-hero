@@ -9,3 +9,6 @@ export const FETCH_MENU_URL =
 
 export const INSTAMART_URL =
   "https://img.freepik.com/free-vector/flat-coming-soon-background-with-megaphone_1017-33737.jpg";
+
+import MainLogo from "../assets/MainLogo.png";
+export default MainLogo;  

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { LOGO_URL } from "../utils/constants";
+// import { LOGO_URL } from "../utils/constants";
+import MainLogo from "../utils/constants";
 import { Link, NavLink } from "react-router-dom";
 import useOnline from "../utils/useOnline";
 import UserContext from "../utils/userContext";
@@ -83,17 +84,20 @@ const Header = () => {
   return (
     <>
       <ScrollToTop />
-      <div className="shadow-md">
-        <div className="container mx-auto py-1 px-4 md:flex md:justify-between md:items-center">
-          <div className="flex items-center justify-between">
-            <Link to="/">
-              <img
-                data-testid="logo"
-                className="h-12 md:h-20"
-                src={LOGO_URL}
-                alt="Logo"
-              />
-            </Link>
+      <div className="shadow-md fixed z-10">
+        <div className="container w-screen bg-opacity-50 backdrop-blur-md shadow-md md:flex md:justify-between md:items-center">
+          <div className="flex items-center justify-center">
+            <div className=" self-center">
+              <Link to="/">
+                <img
+                  data-testid="logo"
+                  className="w-[8rem] h-auto"
+                  // src={LOGO_URL}
+                  src={MainLogo}
+                  alt="Logo"
+                />
+              </Link>
+            </div>
             {/* <span className="ml-2 text-xl font-bold">
             <span className="text-orange-500">Browse</span> Order{" "}
             <span className="text-orange-500">Enjoy!</span>
@@ -112,7 +116,7 @@ const Header = () => {
             </div>
           </div>
           {/* Navigation Links (Hidden on Small Screens) */}
-          <ul className="hidden md:flex items-center space-x-4">
+          <ul className="hidden md:flex items-center gap-x-12 pr-4 ">
             <NavLink
               to="/"
               className={({ isActive }) =>
